@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+
+
 android {
     namespace 'com.kuro.signreader'
     compileSdk 32
