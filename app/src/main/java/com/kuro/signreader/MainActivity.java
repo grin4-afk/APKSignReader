@@ -13,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -46,13 +44,10 @@ public class MainActivity extends Activity {
                 try {
                     PackageManager packageManager = getPackageManager();
                     PackageInfo packageInfo = packageManager.getPackageInfo(appPkg.getText().toString(), PackageManager.GET_SIGNATURES);
-
                     Signature[] signatures = packageInfo.signatures;
-
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     DataOutputStream dos = new DataOutputStream(baos);
                     dos.writeByte(signatures.length);
-
                     StringBuilder sb = new StringBuilder();
                     sb.append("std::vector<std::vector<uint8_t>> apk_signatures {");
                     for (Signature value : signatures) {
@@ -68,14 +63,12 @@ public class MainActivity extends Activity {
                         sb.append("}");
                     }
                     sb.append("};");
-
                     dos.close();
                     baos.close();
-
                     resultBase64.setText("Base64: " + Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT));
                     resultCpp.setText("C++: " + sb.toString());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, "Failed to get signatures: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -94,7 +87,7 @@ public class MainActivity extends Activity {
                     fos.close();
                     Toast.makeText(MainActivity.this, "Saved to " + path, Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, "Failed to save: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
